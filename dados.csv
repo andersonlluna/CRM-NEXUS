@@ -1,0 +1,32 @@
+SEMANA,CLIENTE,SEGMENTO,VALOR,STATUS,RESPONSAVEL,DATA
+1,Grupo Vértex,Enterprise,84000,Fechado,Anderson,07/01/2026
+1,TechWave Ltda.,Mid-Market,37500,Negociação,Carlos,07/01/2026
+1,Bravura S.A.,Enterprise,120000,Proposta,Anderson,07/01/2026
+1,Nexora Digital,Startup,14900,Fechado,Marina,07/01/2026
+1,Construfor,SMB,22300,Perdido,Carlos,07/01/2026
+1,Luminar Tech,Mid-Market,45600,Proposta,Marina,07/01/2026
+2,Átrio Saúde,Enterprise,98000,Fechado,Anderson,14/01/2026
+2,Visão360,Startup,8700,Fechado,Marina,14/01/2026
+2,Portalmaq,SMB,18400,Negociação,Carlos,14/01/2026
+2,Expande Co.,Mid-Market,54000,Proposta,Anderson,14/01/2026
+2,Dataflux,Startup,12300,Perdido,Marina,14/01/2026
+3,Grupo Minerva,Enterprise,135000,Fechado,Anderson,21/01/2026
+3,CloudNine,Mid-Market,41200,Fechado,Carlos,21/01/2026
+3,RapidLog,SMB,19800,Proposta,Marina,21/01/2026
+3,Fenix Digital,Startup,9500,Perdido,Carlos,21/01/2026
+3,Maxistore,SMB,27600,Fechado,Anderson,21/01/2026
+4,Orbita Tech,Mid-Market,63000,Fechado,Marina,28/01/2026
+4,Solare Energia,Enterprise,110000,Negociação,Anderson,28/01/2026
+4,Vendex,SMB,15200,Fechado,Carlos,28/01/2026
+4,Nexgen Bio,Startup,22100,Proposta,Marina,28/01/2026
+4,Primus Logística,Mid-Market,48700,Perdido,Carlos,28/01/2026
+5,Sigma Consult,Enterprise,92000,Fechado,Anderson,04/02/2026
+5,Fluxo Varejo,SMB,11400,Fechado,Marina,04/02/2026
+5,Inova Hub,Startup,17800,Negociação,Carlos,04/02/2026
+5,Metalúrgica Dora,Mid-Market,39500,Proposta,Anderson,04/02/2026
+5,Conecta RH,Startup,8900,Perdido,Marina,04/02/2026
+6,Velox Transportes,Enterprise,145000,Fechado,Anderson,11/02/2026
+6,AgroSmart,Mid-Market,52300,Fechado,Carlos,11/02/2026
+6,Nuvem Contábil,Startup,13600,Fechado,Marina,11/02/2026
+6,Primavera Saúde,SMB,24100,Negociação,Anderson,11/02/2026
+6,Tekton Engenharia,Mid-Market,67800,Proposta,Carlos,11/02/2026
