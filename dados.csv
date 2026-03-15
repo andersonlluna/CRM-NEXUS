@@ -30,3 +30,15 @@ SEMANA,CLIENTE,SEGMENTO,VALOR,STATUS,RESPONSAVEL,DATA
 6,Nuvem Contábil,Startup,13600,Fechado,Marina,11/02/2026
 6,Primavera Saúde,SMB,24100,Negociação,Anderson,11/02/2026
 6,Tekton Engenharia,Mid-Market,67800,Proposta,Carlos,11/02/2026
+7,Alpha Ventures,Enterprise,178000,Fechado,Anderson,18/02/2026
+7,RH Solutions,Mid-Market,44500,Fechado,Marina,18/02/2026
+7,QuickPay,Startup,16200,Fechado,Carlos,18/02/2026
+7,Construmart,SMB,21800,Perdido,Marina,18/02/2026
+7,Biotech Lab,Startup,31000,Negociação,Anderson,18/02/2026
+7,Comercial Nexus,Mid-Market,58900,Proposta,Carlos,18/02/2026
+8,Horizonte Cap.,Enterprise,162000,Fechado,Anderson,25/02/2026
+8,EduTech Brasil,Mid-Market,49700,Fechado,Carlos,25/02/2026
+8,Verde Agro,SMB,18300,Fechado,Marina,25/02/2026
+8,Startup Forge,Startup,12500,Perdido,Carlos,25/02/2026
+8,Plataforma X,Mid-Market,73200,Negociação,Anderson,25/02/2026
+8,MedConnect,Enterprise,95000,Proposta,Marina,25/02/2026
