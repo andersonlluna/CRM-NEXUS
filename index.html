@@ -131,12 +131,15 @@
   .topbar {
     display: flex; align-items: center; justify-content: space-between;
     margin-bottom: 36px; animation: fadeUp 0.5s ease both;
+    gap: 12px;
   }
+
+  .topbar-left { display: flex; align-items: center; gap: 12px; }
 
   .page-title { font-size: 22px; font-weight: 800; }
   .page-sub { font-size: 12px; color: var(--muted); margin-top: 2px; font-family: 'DM Mono', monospace; }
 
-  .topbar-actions { display: flex; gap: 10px; align-items: center; }
+  .topbar-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 
   .btn {
     padding: 9px 18px; border-radius: 8px; border: none; cursor: pointer;
@@ -156,6 +159,39 @@
     color: white; box-shadow: 0 4px 20px rgba(79,124,255,0.3);
   }
 
+  /* MOBILE MENU BUTTON */
+  .mobile-menu-btn {
+    display: none;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border2); border-radius: 8px;
+    padding: 9px 12px; cursor: pointer; color: var(--text);
+    font-size: 18px; line-height: 1; align-items: center;
+  }
+
+  /* SIDEBAR OVERLAY */
+  .sidebar-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.65); z-index: 10;
+    backdrop-filter: blur(2px);
+  }
+  .sidebar-overlay.open { display: block; }
+
+  /* SEARCH */
+  .search-wrap { position: relative; }
+  .search-input {
+    background: rgba(255,255,255,0.05); border: 1px solid var(--border2);
+    border-radius: 8px; padding: 9px 14px 9px 34px;
+    font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text);
+    width: 180px; transition: width 0.2s, border-color 0.2s, background 0.2s; outline: none;
+  }
+  .search-input:focus { border-color: var(--accent); background: rgba(79,124,255,0.07); width: 220px; }
+  .search-input::placeholder { color: var(--muted); }
+  .search-icon {
+    position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
+    color: var(--muted); font-size: 13px; pointer-events: none;
+  }
+
+  /* PERIOD BADGE */
   .period-badge {
     background: rgba(255,255,255,0.05); border: 1px solid var(--border2);
     border-radius: 6px; padding: 7px 14px;
@@ -427,6 +463,7 @@
     color: var(--muted); padding: 4px 10px;
     background: rgba(255,255,255,0.04);
     border: 1px solid var(--border); border-radius: 4px;
+    white-space: nowrap;
   }
 
   /* SEMANA SELECTOR */
@@ -449,6 +486,55 @@
     color: var(--accent);
   }
 
+  /* TEAM */
+  .team-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 0; border-bottom: 1px solid var(--border);
+  }
+  .team-row:last-child { border-bottom: none; }
+  .team-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; flex-shrink: 0;
+  }
+  .team-name { font-size: 12px; font-weight: 600; flex: 1; }
+  .team-bar-bg {
+    width: 60px; height: 5px;
+    background: rgba(255,255,255,0.06); border-radius: 99px; overflow: hidden;
+  }
+  .team-fill {
+    height: 100%; border-radius: 99px;
+    background: linear-gradient(90deg, var(--green), var(--accent));
+    animation: fillBar 1s ease both;
+  }
+  .team-stats { text-align: right; }
+  .team-rev { font-size: 11px; font-family: 'DM Mono', monospace; }
+  .team-deals { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+  /* SEGMENTS */
+  .seg-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 0; border-bottom: 1px solid var(--border);
+  }
+  .seg-row:last-child { border-bottom: none; }
+  .seg-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+  .seg-name { font-size: 12px; font-weight: 600; flex: 1; }
+  .seg-bar-bg {
+    width: 80px; height: 5px;
+    background: rgba(255,255,255,0.06); border-radius: 99px; overflow: hidden;
+  }
+  .seg-fill { height: 100%; border-radius: 99px; animation: fillBar 1s ease both; }
+  .seg-val {
+    font-size: 11px; font-family: 'DM Mono', monospace;
+    color: var(--text); min-width: 70px; text-align: right;
+  }
+
+  /* EMPTY STATE */
+  .empty-state {
+    color: var(--muted); font-size: 12px;
+    padding: 20px 0; font-family: 'DM Mono', monospace;
+  }
+
   /* ANIMATIONS */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(14px); }
@@ -460,8 +546,11 @@
   ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
 
   /* RESPONSIVE */
-  @media (max-width: 1024px) {
+  @media (max-width: 1200px) {
     .kpi-grid { grid-template-columns: repeat(2,1fr); }
+  }
+
+  @media (max-width: 1024px) {
     .mid-grid { grid-template-columns: 1fr; }
     .bottom-grid { grid-template-columns: 1fr; }
   }
@@ -469,17 +558,35 @@
   @media (max-width: 768px) {
     .shell { grid-template-columns: 1fr; }
     .sidebar { display: none; }
+    .sidebar.mobile-open {
+      display: flex; position: fixed; left: 0; top: 0;
+      height: 100vh; z-index: 20; width: 220px;
+      animation: slideIn 0.25s ease;
+    }
+    @keyframes slideIn { from { transform: translateX(-100%); } }
+    .mobile-menu-btn { display: flex; }
     .main { padding: 20px 16px; }
     .kpi-grid { grid-template-columns: repeat(2,1fr); }
+    .search-input { width: 130px; }
+    .search-input:focus { width: 160px; }
+    .topbar { flex-wrap: wrap; }
+  }
+
+  @media (max-width: 480px) {
+    .kpi-grid { grid-template-columns: 1fr 1fr; }
+    .kpi-value { font-size: 22px; }
   }
 </style>
 </head>
 <body>
 
+<!-- MOBILE SIDEBAR OVERLAY -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
 <div class="shell">
 
   <!-- SIDEBAR -->
-  <aside class="sidebar">
+  <aside class="sidebar" id="sidebar">
     <div class="logo">
       <div class="logo-mark">
         <div class="logo-icon">⬡</div>
@@ -536,11 +643,25 @@
 
     <!-- TOP BAR -->
     <div class="topbar">
-      <div>
-        <div class="page-title">Visão Geral</div>
-        <div class="page-sub" id="periodLabel">Carregando dados...</div>
+      <div class="topbar-left">
+        <button class="mobile-menu-btn" onclick="openSidebar()" aria-label="Abrir menu">☰</button>
+        <div>
+          <div class="page-title">Visão Geral</div>
+          <div class="page-sub" id="periodLabel">Carregando dados...</div>
+        </div>
       </div>
       <div class="topbar-actions">
+        <div class="search-wrap">
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <input
+            class="search-input"
+            id="searchInput"
+            type="search"
+            placeholder="Buscar cliente..."
+            oninput="onSearch()"
+            aria-label="Buscar cliente ou responsável"
+          >
+        </div>
         <div class="update-tag" id="updateTag">Atualizando...</div>
         <button class="btn btn-ghost" onclick="exportCSV()">↓ Exportar</button>
       </div>
@@ -664,6 +785,28 @@
           <div id="rankingPanel"></div>
         </div>
 
+        <!-- DESEMPENHO DA EQUIPE -->
+        <div class="card" style="animation-delay:0.45s">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Desempenho da Equipe</div>
+              <div class="card-sub" id="teamLabel">Por receita gerada</div>
+            </div>
+          </div>
+          <div id="teamPanel"></div>
+        </div>
+
+        <!-- RECEITA POR SEGMENTO -->
+        <div class="card" style="animation-delay:0.5s">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Receita por Segmento</div>
+              <div class="card-sub">Negócios fechados</div>
+            </div>
+          </div>
+          <div id="segmentPanel"></div>
+        </div>
+
       </div>
     </div><!-- /content -->
 
@@ -672,13 +815,10 @@
 
 <script>
 // ─── CONFIG ──────────────────────────────────────────────────────────────────
-// 🔧 ATUALIZE AQUI SE MUDAR O NOME DO ARQUIVO CSV
 const CSV_FILE = 'dados.csv';
 
-// Cores para avatares
 const AVATAR_COLORS = ['#4f7cff','#7c5cfc','#10d87e','#ffb547','#ff4d6a','#06b6d4','#f59e0b','#8b5cf6'];
 
-// Status → pill class
 const PILL = {
   'Fechado':    'pill-fechado',
   'Proposta':   'pill-proposta',
@@ -686,9 +826,43 @@ const PILL = {
   'Perdido':    'pill-perdido',
 };
 
+const SEG_COLORS = {
+  'Enterprise': '#4f7cff',
+  'Mid-Market': '#7c5cfc',
+  'SMB':        '#10d87e',
+  'Startup':    '#ffb547',
+};
+
 // ─── STATE ───────────────────────────────────────────────────────────────────
-let allData   = [];
+let allData    = [];
+let allSemanas = [];
 let semanaAtual = null;
+let searchTerm  = '';
+
+// ─── UTILS ───────────────────────────────────────────────────────────────────
+// Prevents XSS when inserting user-supplied strings into innerHTML
+function escHtml(str) {
+  return String(str ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function fmt(n) {
+  if (!n || isNaN(n)) return 'R$ 0';
+  if (n >= 1000000) return `R$ ${(n/1000000).toFixed(2).replace('.',',')}M`;
+  if (n >= 1000)    return `R$ ${(n/1000).toFixed(1).replace('.',',')}K`;
+  return `R$ ${n.toLocaleString('pt-BR')}`;
+}
+
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return [r,g,b];
+}
 
 // ─── LOAD CSV ────────────────────────────────────────────────────────────────
 async function loadCSV() {
@@ -717,34 +891,61 @@ async function loadCSV() {
     </div>`;
 }
 
-// ─── PARSE CSV ───────────────────────────────────────────────────────────────
+// ─── PARSE CSV ────────────────────────────────────────────────────────────────
+// Handles quoted fields that may contain commas (RFC 4180 compliant)
+function parseCSVLine(line) {
+  const result = [];
+  let cur = '';
+  let inQuote = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (ch === '"') {
+      if (inQuote && line[i + 1] === '"') { cur += '"'; i++; } // escaped quote
+      else inQuote = !inQuote;
+    } else if (ch === ',' && !inQuote) {
+      result.push(cur.trim());
+      cur = '';
+    } else {
+      cur += ch;
+    }
+  }
+  result.push(cur.trim());
+  return result;
+}
+
 function parseCSV(text) {
   const lines  = text.trim().split('\n').filter(l => l.trim());
-  const header = lines[0].split(',').map(h => h.trim());
+  const header = parseCSVLine(lines[0]);
 
   allData = lines.slice(1).map(line => {
-    const vals = line.split(',').map(v => v.trim());
+    const vals = parseCSVLine(line);
     const obj  = {};
-    header.forEach((h, i) => { obj[h] = vals[i] || ''; });
+    header.forEach((h, i) => { obj[h] = vals[i] ?? ''; });
     obj.VALOR  = parseFloat(obj.VALOR) || 0;
     obj.SEMANA = parseInt(obj.SEMANA) || 1;
     return obj;
-  });
+  }).filter(d => d.CLIENTE); // drop empty rows
 
-  const semanas = [...new Set(allData.map(d => d.SEMANA))].sort((a,b) => a-b);
-  semanaAtual   = semanas[semanas.length - 1]; // começa na última semana
+  allSemanas  = [...new Set(allData.map(d => d.SEMANA))].sort((a,b) => a-b);
+  semanaAtual = allSemanas[allSemanas.length - 1];
 
-  buildUI(semanas);
+  // Restore last selected week from localStorage
+  const saved = localStorage.getItem('nexus-semana');
+  if (saved) {
+    const n = saved === 'all' ? 'all' : parseInt(saved);
+    if (n === 'all' || allSemanas.includes(n)) semanaAtual = n;
+  }
+
+  buildUI(allSemanas);
 }
 
 // ─── BUILD UI ────────────────────────────────────────────────────────────────
 function buildUI(semanas) {
-  // Semana selector
   const sel = document.getElementById('semanaSelector');
   const allBtn = document.createElement('button');
   allBtn.className = 'sem-btn';
   allBtn.textContent = 'Todas';
-  allBtn.onclick = () => selectSemana('all', semanas);
+  allBtn.onclick = () => selectSemana('all');
   sel.appendChild(allBtn);
 
   semanas.forEach(s => {
@@ -752,32 +953,43 @@ function buildUI(semanas) {
     btn.className = 'sem-btn';
     btn.textContent = `Semana ${s}`;
     btn.id = `semBtn-${s}`;
-    btn.onclick = () => selectSemana(s, semanas);
+    btn.onclick = () => selectSemana(s);
     sel.appendChild(btn);
   });
 
-  // Atualiza tag
   const now = new Date();
   document.getElementById('updateTag').textContent =
     `↑ ${now.toLocaleDateString('pt-BR', {day:'2-digit',month:'short'})}`;
 
-  // Badge sidebar
   const uniqueClients = new Set(allData.map(d => d.CLIENTE));
   document.getElementById('totalClientesBadge').textContent = uniqueClients.size;
 
-  // Mostra conteúdo
   document.getElementById('loading').style.display = 'none';
   document.getElementById('content').style.display  = 'block';
 
-  // Seleciona última semana
-  selectSemana(semanaAtual, semanas);
+  selectSemana(semanaAtual);
+}
+
+// ─── SEARCH ──────────────────────────────────────────────────────────────────
+function onSearch() {
+  searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
+  selectSemana(semanaAtual);
+}
+
+function applySearch(data) {
+  if (!searchTerm) return data;
+  return data.filter(d =>
+    d.CLIENTE.toLowerCase().includes(searchTerm) ||
+    d.RESPONSAVEL.toLowerCase().includes(searchTerm) ||
+    d.SEGMENTO.toLowerCase().includes(searchTerm)
+  );
 }
 
 // ─── SELECT SEMANA ───────────────────────────────────────────────────────────
-function selectSemana(sem, semanas) {
+function selectSemana(sem) {
   semanaAtual = sem;
+  localStorage.setItem('nexus-semana', sem);
 
-  // Atualiza botões
   document.querySelectorAll('.sem-btn').forEach(b => b.classList.remove('active'));
   if (sem === 'all') {
     document.querySelector('.sem-btn').classList.add('active');
@@ -786,62 +998,67 @@ function selectSemana(sem, semanas) {
     if (btn) btn.classList.add('active');
   }
 
-  const filtered = sem === 'all' ? allData : allData.filter(d => d.SEMANA === sem);
+  const base     = sem === 'all' ? allData : allData.filter(d => d.SEMANA === sem);
+  const filtered = applySearch(base);
   const prevSem  = typeof sem === 'number' ? sem - 1 : null;
   const prev     = prevSem ? allData.filter(d => d.SEMANA === prevSem) : null;
 
   renderKPIs(filtered, prev);
-  renderChart(semanas);
+  renderChart(allSemanas);
   renderPipeline(filtered);
   renderTable(filtered);
   renderRanking();
+  renderTeam(filtered);
+  renderSegments(filtered);
 
-  // Labels
   const label = sem === 'all'
-    ? `Todas as semanas · ${semanas.length} semanas`
-    : `Semana ${sem} · ${filtered.length} negócios`;
+    ? `Todas as semanas · ${allSemanas.length} semanas`
+    : `Semana ${sem} · ${base.length} negócios`;
   document.getElementById('periodLabel').textContent = label;
   document.getElementById('semanaAtualLabel').textContent =
     sem === 'all' ? 'Todos os períodos' : `Semana ${sem}`;
+  document.getElementById('teamLabel').textContent =
+    sem === 'all' ? 'Acumulado geral' : `Semana ${sem}`;
 }
 
 // ─── KPIs ────────────────────────────────────────────────────────────────────
 function renderKPIs(data, prev) {
   const fechados = data.filter(d => d.STATUS === 'Fechado');
   const perdidos = data.filter(d => d.STATUS === 'Perdido');
-  const abertos  = data.filter(d => !['Fechado','Perdido'].includes(d.STATUS));
 
-  const receita  = fechados.reduce((s,d) => s + d.VALOR, 0);
-  const nFech    = fechados.length;
-  const total    = data.filter(d => d.STATUS !== 'Proposta').length || 1;
-  const taxa     = (nFech / (nFech + perdidos.length) * 100) || 0;
-  const ticket   = nFech > 0 ? receita / nFech : 0;
+  const receita = fechados.reduce((s,d) => s + d.VALOR, 0);
+  const nFech   = fechados.length;
+  const taxa    = (nFech + perdidos.length) > 0 ? (nFech / (nFech + perdidos.length) * 100) : 0;
+  const ticket  = nFech > 0 ? receita / nFech : 0;
 
-  // Prev
   const prevFech   = prev ? prev.filter(d => d.STATUS === 'Fechado') : null;
   const prevRec    = prevFech ? prevFech.reduce((s,d) => s + d.VALOR, 0) : null;
   const prevN      = prevFech ? prevFech.length : null;
   const prevPerd   = prev ? prev.filter(d => d.STATUS === 'Perdido') : null;
-  const prevTaxa   = prevFech && prevPerd ? prevFech.length / (prevFech.length + prevPerd.length) * 100 : null;
-  const prevTicket = prevN > 0 ? prevRec / prevN : null;
+  const prevTaxa   = (prevFech && prevPerd && (prevFech.length + prevPerd.length) > 0)
+    ? prevFech.length / (prevFech.length + prevPerd.length) * 100 : null;
+  const prevTicket = (prevN != null && prevN > 0) ? prevRec / prevN : null;
 
-  setKPI('kpiReceita',  fmt(receita),  delta(receita, prevRec, '%', true),  prevRec ? `vs ${fmt(prevRec)} semana ant.` : 'Acumulado do período');
-  setKPI('kpiFechados', `${nFech}`,    delta(nFech, prevN, '', false),      prevN != null ? `vs ${prevN} semana ant.` : 'Total do período');
+  setKPI('kpiReceita',  fmt(receita),  delta(receita, prevRec),     prevRec != null ? `vs ${fmt(prevRec)} semana ant.` : 'Acumulado do período');
+  setKPI('kpiFechados', `${nFech}`,    delta(nFech, prevN),         prevN != null ? `vs ${prevN} semana ant.` : 'Total do período');
   setKPI('kpiTaxa',     `${taxa.toFixed(1).replace('.',',')}%`, deltaAbs(taxa, prevTaxa, 'p.p.'), prevTaxa != null ? `vs ${prevTaxa.toFixed(1).replace('.',',')}% semana ant.` : 'Do período selecionado');
-  setKPI('kpiTicket',   fmt(ticket),   delta(ticket, prevTicket, '%', false), prevTicket ? `vs ${fmt(prevTicket)} semana ant.` : 'Do período selecionado');
+  setKPI('kpiTicket',   fmt(ticket),   delta(ticket, prevTicket),   prevTicket ? `vs ${fmt(prevTicket)} semana ant.` : 'Do período selecionado');
 }
 
 function setKPI(id, val, deltaHtml, comp) {
   document.getElementById(id).textContent = val;
   const deltaEl = document.getElementById(id + 'Delta');
-  if (deltaEl) deltaEl.outerHTML = deltaHtml;
+  if (deltaEl) {
+    // Preserve the element ID so subsequent renders can find it
+    deltaEl.outerHTML = deltaHtml.replace('<span ', `<span id="${id}Delta" `);
+  }
   const compEl = document.getElementById(id + 'Comp');
   if (compEl) compEl.textContent = comp;
 }
 
-function delta(curr, prev, suffix, isMoney) {
+function delta(curr, prev) {
   if (prev == null || prev === 0) return `<span class="kpi-delta neutral">— sem comparação</span>`;
-  const pct  = ((curr - prev) / prev * 100);
+  const pct  = (curr - prev) / prev * 100;
   const sign = pct >= 0 ? '↑' : '↓';
   const cls  = pct >= 0 ? 'up' : 'down';
   return `<span class="kpi-delta ${cls}">${sign} ${Math.abs(pct).toFixed(1)}%</span>`;
@@ -857,37 +1074,32 @@ function deltaAbs(curr, prev, unit) {
 
 // ─── CHART ───────────────────────────────────────────────────────────────────
 function renderChart(semanas) {
-  const chart = document.getElementById('barChart');
-  chart.innerHTML = '';
+  const maxVal = Math.max(...semanas.map(s =>
+    allData.filter(d => d.SEMANA === s && d.STATUS === 'Fechado').length
+  ), 1);
 
-  const maxVal = Math.max(...semanas.map(s => {
-    return allData.filter(d => d.SEMANA === s && d.STATUS === 'Fechado').length;
-  }), 1);
-
-  semanas.forEach((s, i) => {
-    const won  = allData.filter(d => d.SEMANA === s && d.STATUS === 'Fechado').length;
-    const lost = allData.filter(d => d.SEMANA === s && d.STATUS === 'Perdido').length;
-    const wonH  = (won / maxVal * 100);
-    const lostH = (lost / maxVal * 40);
-    const d1 = 0.3 + i * 0.06;
-    const d2 = 0.35 + i * 0.06;
-
-    chart.innerHTML += `
+  const cols = semanas.map((s, i) => {
+    const won   = allData.filter(d => d.SEMANA === s && d.STATUS === 'Fechado').length;
+    const lost  = allData.filter(d => d.SEMANA === s && d.STATUS === 'Perdido').length;
+    const wonH  = won / maxVal * 100;
+    const lostH = lost / maxVal * 40;
+    const d1 = (0.3 + i * 0.06).toFixed(2);
+    const d2 = (0.35 + i * 0.06).toFixed(2);
+    return `
       <div class="bar-col">
         <div class="bar-stack-inner">
-          <div class="bar-won" style="height:${wonH}%;animation-delay:${d1}s" title="${won} fechados"></div>
-          <div class="bar-lost" style="height:${lostH}%;animation-delay:${d2}s" title="${lost} perdidos"></div>
+          <div class="bar-won" style="height:${wonH}%;animation-delay:${d1}s" title="${won} fechados na Semana ${s}"></div>
+          <div class="bar-lost" style="height:${lostH}%;animation-delay:${d2}s" title="${lost} perdidos na Semana ${s}"></div>
         </div>
         <div class="bar-lbl">S${s}</div>
       </div>`;
   });
+
+  document.getElementById('barChart').innerHTML = cols.join('');
 }
 
 // ─── PIPELINE ────────────────────────────────────────────────────────────────
 function renderPipeline(data) {
-  const el = document.getElementById('pipeline');
-  el.innerHTML = '';
-
   const stages = [
     { key:'Proposta',    color:'#4f7cff' },
     { key:'Negociação',  color:'#ffb547' },
@@ -897,67 +1109,65 @@ function renderPipeline(data) {
 
   const total = data.length || 1;
 
-  stages.forEach((st, i) => {
+  const rows = stages.map((st, i) => {
     const items = data.filter(d => d.STATUS === st.key);
     const pct   = items.length / total;
-    const valor = items.reduce((s,d) => s + d.VALOR, 0);
-    const delay = 0.4 + i * 0.08;
-
-    el.innerHTML += `
+    const delay = (0.4 + i * 0.08).toFixed(2);
+    return `
       <div class="pipeline-item" style="animation:fadeUp 0.5s ease ${delay}s both">
-        <div class="pipeline-stage">${st.key}</div>
+        <div class="pipeline-stage">${escHtml(st.key)}</div>
         <div class="pipeline-bar-bg">
-          <div class="pipeline-fill" style="width:${pct*100}%;background:${st.color};animation-delay:${delay+0.1}s"></div>
+          <div class="pipeline-fill" style="width:${pct*100}%;background:${st.color};animation-delay:${(parseFloat(delay)+0.1).toFixed(2)}s"></div>
         </div>
         <div class="pipeline-val">${items.length} neg.</div>
       </div>`;
   });
 
-  // Total aberto
-  const abertos = data.filter(d => !['Fechado','Perdido'].includes(d.STATUS));
+  document.getElementById('pipeline').innerHTML = rows.join('');
+
+  const abertos     = data.filter(d => !['Fechado','Perdido'].includes(d.STATUS));
   const totalAberto = abertos.reduce((s,d) => s + d.VALOR, 0);
-  document.getElementById('totalAberto').textContent = fmt(totalAberto);
+  document.getElementById('totalAberto').textContent    = fmt(totalAberto);
   document.getElementById('totalNegAbertos').textContent = `${abertos.length} negócios em aberto`;
 }
 
 // ─── TABLE ───────────────────────────────────────────────────────────────────
 function renderTable(data) {
-  const tbody = document.getElementById('clientTable');
-  tbody.innerHTML = '';
-
   const sorted = [...data].sort((a,b) => b.VALOR - a.VALOR).slice(0, 8);
 
-  sorted.forEach((c, i) => {
-    const [r,g,b2] = hexToRgb(AVATAR_COLORS[i % AVATAR_COLORS.length]);
-    const color    = AVATAR_COLORS[i % AVATAR_COLORS.length];
-    const init     = (c.CLIENTE || '?').substring(0,2).toUpperCase();
-    const pillCls  = PILL[c.STATUS] || 'pill-proposta';
-    const delay    = 0.4 + i * 0.05;
+  if (!sorted.length) {
+    document.getElementById('clientTable').innerHTML =
+      `<tr><td colspan="4" class="empty-state">Nenhum resultado encontrado.</td></tr>`;
+    return;
+  }
 
-    tbody.innerHTML += `
+  const rows = sorted.map((c, i) => {
+    const color   = AVATAR_COLORS[i % AVATAR_COLORS.length];
+    const init    = escHtml((c.CLIENTE || '?').substring(0, 2).toUpperCase());
+    const pillCls = PILL[c.STATUS] || 'pill-proposta';
+    const delay   = (0.4 + i * 0.05).toFixed(2);
+    return `
       <tr style="animation-delay:${delay}s">
         <td>
           <div class="client-cell">
             <div class="mini-avatar" style="background:${color}22;color:${color}">${init}</div>
             <div>
-              <div class="client-name">${c.CLIENTE}</div>
-              <div class="client-segment">${c.SEGMENTO}</div>
+              <div class="client-name">${escHtml(c.CLIENTE)}</div>
+              <div class="client-segment">${escHtml(c.SEGMENTO)}</div>
             </div>
           </div>
         </td>
         <td style="font-family:'DM Mono',monospace;font-size:11px">${fmt(c.VALOR)}</td>
-        <td><span class="status-pill ${pillCls}">${c.STATUS}</span></td>
-        <td style="color:var(--muted);font-size:11px">${c.RESPONSAVEL}</td>
+        <td><span class="status-pill ${pillCls}">${escHtml(c.STATUS)}</span></td>
+        <td style="color:var(--muted);font-size:11px">${escHtml(c.RESPONSAVEL)}</td>
       </tr>`;
   });
+
+  document.getElementById('clientTable').innerHTML = rows.join('');
 }
 
 // ─── RANKING ─────────────────────────────────────────────────────────────────
 function renderRanking() {
-  const el = document.getElementById('rankingPanel');
-  el.innerHTML = '';
-
-  // Top clientes por receita acumulada (só fechados)
   const map = {};
   allData.filter(d => d.STATUS === 'Fechado').forEach(d => {
     if (!map[d.CLIENTE]) map[d.CLIENTE] = { val: 0, seg: d.SEGMENTO };
@@ -970,24 +1180,94 @@ function renderRanking() {
 
   const maxVal = sorted[0]?.[1].val || 1;
 
-  sorted.forEach(([name, info], i) => {
+  const rows = sorted.map(([name, info], i) => {
     const pct   = info.val / maxVal * 100;
     const color = AVATAR_COLORS[i % AVATAR_COLORS.length];
-    const delay = 0.4 + i * 0.06;
-
-    el.innerHTML += `
+    const delay = (0.4 + i * 0.06).toFixed(2);
+    return `
       <div class="rank-item" style="animation-delay:${delay}s">
         <div class="rank-pos">${i+1}.</div>
         <div style="flex:1">
-          <div class="rank-name">${name}</div>
-          <div class="rank-seg">${info.seg}</div>
+          <div class="rank-name">${escHtml(name)}</div>
+          <div class="rank-seg">${escHtml(info.seg)}</div>
         </div>
         <div class="rank-bar-bg">
-          <div class="rank-fill" style="width:${pct}%;animation-delay:${delay+0.1}s"></div>
+          <div class="rank-fill" style="width:${pct}%;animation-delay:${(parseFloat(delay)+0.1).toFixed(2)}s"></div>
         </div>
         <div class="rank-val">${fmt(info.val)}</div>
       </div>`;
   });
+
+  document.getElementById('rankingPanel').innerHTML = rows.length
+    ? rows.join('')
+    : '<div class="empty-state">Nenhum negócio fechado.</div>';
+}
+
+// ─── TEAM PERFORMANCE ────────────────────────────────────────────────────────
+function renderTeam(data) {
+  const map = {};
+  data.filter(d => d.STATUS === 'Fechado').forEach(d => {
+    if (!map[d.RESPONSAVEL]) map[d.RESPONSAVEL] = { val: 0, deals: 0 };
+    map[d.RESPONSAVEL].val   += d.VALOR;
+    map[d.RESPONSAVEL].deals += 1;
+  });
+
+  const sorted = Object.entries(map).sort((a,b) => b[1].val - a[1].val);
+  const maxVal = sorted[0]?.[1].val || 1;
+
+  const rows = sorted.map(([name, info], i) => {
+    const pct   = info.val / maxVal * 100;
+    const color = AVATAR_COLORS[i % AVATAR_COLORS.length];
+    const init  = escHtml(name.substring(0, 2).toUpperCase());
+    const delay = (0.45 + i * 0.06).toFixed(2);
+    return `
+      <div class="team-row" style="animation:fadeUp 0.5s ease ${delay}s both">
+        <div class="team-avatar" style="background:${color}22;color:${color}">${init}</div>
+        <div class="team-name">${escHtml(name)}</div>
+        <div class="team-bar-bg">
+          <div class="team-fill" style="width:${pct}%;animation-delay:${(parseFloat(delay)+0.1).toFixed(2)}s"></div>
+        </div>
+        <div class="team-stats">
+          <div class="team-rev">${fmt(info.val)}</div>
+          <div class="team-deals">${info.deals} fechados</div>
+        </div>
+      </div>`;
+  });
+
+  document.getElementById('teamPanel').innerHTML = rows.length
+    ? rows.join('')
+    : '<div class="empty-state">Nenhum negócio fechado no período.</div>';
+}
+
+// ─── SEGMENT BREAKDOWN ───────────────────────────────────────────────────────
+function renderSegments(data) {
+  const map = {};
+  data.filter(d => d.STATUS === 'Fechado').forEach(d => {
+    if (!map[d.SEGMENTO]) map[d.SEGMENTO] = 0;
+    map[d.SEGMENTO] += d.VALOR;
+  });
+
+  const sorted = Object.entries(map).sort((a,b) => b[1] - a[1]);
+  const maxVal = sorted[0]?.[1] || 1;
+
+  const rows = sorted.map(([seg, val], i) => {
+    const pct   = val / maxVal * 100;
+    const color = SEG_COLORS[seg] || AVATAR_COLORS[i % AVATAR_COLORS.length];
+    const delay = (0.5 + i * 0.06).toFixed(2);
+    return `
+      <div class="seg-row" style="animation:fadeUp 0.5s ease ${delay}s both">
+        <div class="seg-dot" style="background:${color}"></div>
+        <div class="seg-name">${escHtml(seg)}</div>
+        <div class="seg-bar-bg">
+          <div class="seg-fill" style="width:${pct}%;background:${color};animation-delay:${(parseFloat(delay)+0.1).toFixed(2)}s"></div>
+        </div>
+        <div class="seg-val">${fmt(val)}</div>
+      </div>`;
+  });
+
+  document.getElementById('segmentPanel').innerHTML = rows.length
+    ? rows.join('')
+    : '<div class="empty-state">Nenhum negócio fechado no período.</div>';
 }
 
 // ─── EXPORT ──────────────────────────────────────────────────────────────────
@@ -995,27 +1275,31 @@ function exportCSV() {
   const sem  = semanaAtual;
   const data = sem === 'all' ? allData : allData.filter(d => d.SEMANA === sem);
   const head = 'SEMANA,CLIENTE,SEGMENTO,VALOR,STATUS,RESPONSAVEL,DATA\n';
-  const rows = data.map(d => `${d.SEMANA},${d.CLIENTE},${d.SEGMENTO},${d.VALOR},${d.STATUS},${d.RESPONSAVEL},${d.DATA}`).join('\n');
+
+  // Properly quote fields that may contain commas or quotes
+  const quoteField = v => `"${String(v).replace(/"/g, '""')}"`;
+  const rows = data.map(d =>
+    `${d.SEMANA},${quoteField(d.CLIENTE)},${quoteField(d.SEGMENTO)},${d.VALOR},${quoteField(d.STATUS)},${quoteField(d.RESPONSAVEL)},${d.DATA}`
+  ).join('\n');
+
   const blob = new Blob([head + rows], { type: 'text/csv;charset=utf-8;' });
   const url  = URL.createObjectURL(blob);
-  const a    = document.createElement('a'); a.href = url;
-  a.download = `nexus-crm-sem${sem}.csv`; a.click();
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = `nexus-crm-sem${sem}.csv`;
+  a.click();
   URL.revokeObjectURL(url);
 }
 
-// ─── UTILS ───────────────────────────────────────────────────────────────────
-function fmt(n) {
-  if (!n || isNaN(n)) return 'R$ 0';
-  if (n >= 1000000) return `R$ ${(n/1000000).toFixed(2).replace('.',',')}M`;
-  if (n >= 1000)    return `R$ ${(n/1000).toFixed(1).replace('.',',')}K`;
-  return `R$ ${n.toLocaleString('pt-BR')}`;
+// ─── MOBILE SIDEBAR ──────────────────────────────────────────────────────────
+function openSidebar() {
+  document.getElementById('sidebar').classList.add('mobile-open');
+  document.getElementById('sidebarOverlay').classList.add('open');
 }
 
-function hexToRgb(hex) {
-  const r = parseInt(hex.slice(1,3),16);
-  const g = parseInt(hex.slice(3,5),16);
-  const b = parseInt(hex.slice(5,7),16);
-  return [r,g,b];
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('mobile-open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
 }
 
 // ─── INIT ────────────────────────────────────────────────────────────────────
